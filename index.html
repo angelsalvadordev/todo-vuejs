@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <title>TodoList in Vue</title>
+  <style>
+    .tachado {
+      text-decoration: line-through;
+    }
+
+    .debug {
+      outline: 1px solid red;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Vue component -->
+
+  <!-- Init Error Alert -->
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- End Error Alert -->
+
+  <div class="container">
+    <div id="taskApp" class="col-sm-8 col-sm-offset-2 mx-auto">
+      <h1 class="text-center">{{nameApp}}</h1>
+      <form @submit.prevent="addTask" action="">
+        <input type="text" v-model="tasks.title" class="form-control" placeholder="Mi siguiente tarea es..." />
+        <input type="submit" value="Agregar" class="btn btn-success btn-block">
+      </form>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Hecho!</th>
+            <th>Tarea</th>
+            <th>Accion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="task in tasks">
+            <td>
+              <input type="checkbox" v-model="task.done">
+            </td>
+            <td>
+              <span v-if="!task.editing" :class="{tachado: task.done}">{{task.title}}</span>
+              <input v-else type="text" v-model="task.title" @blur="doneEdit(task)" @keyup.enter="doneEdit(task)"
+                @keyup.esc="cancelEdit(task)" />
+            </td>
+            <td>
+              <button @click="editTask(task)" class="btn btn-info">Modificar</button>
+              <button @click="deleteTask(task)" class="btn btn-danger">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: "#taskApp",
+      data: {
+        nameApp: "ToDo VueJS",
+        beforeTitleCache: '',
+        tasks: [
+          {
+            title: "tarea 1",
+            done: false,
+            editing: false
+          },
+          {
+            title: "tarea 2",
+            done: false,
+            editing: false
+          },
+          {
+            title: "tarea 3",
+            done: false,
+            editing: false
+          }
+
+        ]
+      },
+      methods: {
+        addTask: function (e) {
+          if (this.tasks.title) {
+            if (this.tasks.title.length <= 5) {
+              alert('Se requiere minimo 6 caracteres para agregar una tarea')
+              return
+            }
+          } else {
+            alert('Por favor, ingresa el nombre de la tarea')
+            return
+          }
+
+          this.tasks.push({
+            title: this.tasks.title,
+            done: false
+          })
+        },
+        editTask: function (task) {
+          this.beforeTitleCache = task.title
+          task.editing = true
+        },
+        doneEdit: function (task) {
+          if (task.title.trim() === '') {
+            task.title = this.beforeTitleCache
+          }
+
+          task.editing = false
+        },
+        cancelEdit: function (task) {
+          task.title = this.beforeTitleCache
+          task.editing = false
+        },
+        deleteTask: function (task) {
+          if (confirm('Estas seguro de eliminar esta tarea?')) {
+            var index = this.tasks.indexOf(task)
+            this.tasks.splice(index, 1)
+          }
+        }
+      }
+    });
+
+  </script>
+</body>
+
+</html>
