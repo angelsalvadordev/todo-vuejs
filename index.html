@@ -7,16 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/styles.css">
   <title>TodoList in Vue</title>
-  <style>
-    .tachado {
-      text-decoration: line-through;
-    }
-
-    .debug {
-      outline: 1px solid red;
-    }
-  </style>
 </head>
 
 <body>
@@ -67,73 +59,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script>
-    new Vue({
-      el: "#taskApp",
-      data: {
-        nameApp: "ToDo VueJS",
-        beforeTitleCache: '',
-        tasks: [
-          {
-            title: "tarea 1",
-            done: false,
-            editing: false
-          },
-          {
-            title: "tarea 2",
-            done: false,
-            editing: false
-          },
-          {
-            title: "tarea 3",
-            done: false,
-            editing: false
-          }
-
-        ]
-      },
-      methods: {
-        addTask: function (e) {
-          if (this.tasks.title) {
-            if (this.tasks.title.length <= 5) {
-              alert('Se requiere minimo 6 caracteres para agregar una tarea')
-              return
-            }
-          } else {
-            alert('Por favor, ingresa el nombre de la tarea')
-            return
-          }
-
-          this.tasks.push({
-            title: this.tasks.title,
-            done: false
-          })
-        },
-        editTask: function (task) {
-          this.beforeTitleCache = task.title
-          task.editing = true
-        },
-        doneEdit: function (task) {
-          if (task.title.trim() === '') {
-            task.title = this.beforeTitleCache
-          }
-
-          task.editing = false
-        },
-        cancelEdit: function (task) {
-          task.title = this.beforeTitleCache
-          task.editing = false
-        },
-        deleteTask: function (task) {
-          if (confirm('Estas seguro de eliminar esta tarea?')) {
-            var index = this.tasks.indexOf(task)
-            this.tasks.splice(index, 1)
-          }
-        }
-      }
-    });
-
-  </script>
+  <script src="js/app.js"></script>
 </body>
 
 </html>
