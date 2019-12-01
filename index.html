@@ -12,52 +12,59 @@
 </head>
 
 <body>
-  <!-- Vue component -->
+  <!-- Init Vue App -->
+  <div id="taskApp">
 
-  <!-- Init Error Alert -->
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <!-- End Error Alert -->
-
-  <div class="container">
-    <div id="taskApp" class="col-sm-8 col-sm-offset-2 mx-auto">
-      <h1 class="text-center">{{nameApp}}</h1>
-      <form @submit.prevent="addTask" action="">
-        <input type="text" v-model="tasks.title" class="form-control" placeholder="Mi siguiente tarea es..." />
-        <input type="submit" value="Agregar" class="btn btn-success btn-block">
-      </form>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Hecho!</th>
-            <th>Tarea</th>
-            <th>Accion</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="task in tasks">
-            <td>
-              <input type="checkbox" v-model="task.done">
-            </td>
-            <td>
-              <span v-if="!task.editing" :class="{tachado: task.done}">{{task.title}}</span>
-              <input v-else type="text" v-model="task.title" @blur="doneEdit(task)" @keyup.enter="doneEdit(task)"
-                @keyup.esc="cancelEdit(task)" />
-            </td>
-            <td>
-              <button @click="editTask(task)" class="btn btn-info">Modificar</button>
-              <button @click="deleteTask(task)" class="btn btn-danger">Eliminar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Init Error Alert -->
+    <div class="alert alert-dismissible fade text-center" :class="[alertMessage.length > 0 ? 'show' : '', alertClass]"
+      role="alert">
+      <span v-html="alertMessage"></span>
+      <button @click="alertMessage = ''" type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-  </div>
+    <!-- End Error Alert -->
 
+    <!-- Init Content App -->
+    <div class="container">
+      <div class="col-sm-8 col-sm-offset-2 mx-auto">
+        <h1 class="text-center">{{nameApp}}</h1>
+        <form @submit.prevent="addTask" action="">
+          <input type="text" v-model="newTask" class="form-control" placeholder="Mi siguiente tarea es..." />
+          <input type="submit" value="Agregar" class="btn btn-success btn-block">
+        </form>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Hecho!</th>
+              <th>Tarea</th>
+              <th>Accion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Init Cycle For Tasks -->
+            <tr v-for="task in tasks">
+              <td>
+                <input type="checkbox" v-model="task.done">
+              </td>
+              <td>
+                <span v-if="!task.editing" :class="{tachado: task.done}">{{task.title}}</span>
+                <input v-else type="text" v-model="task.title" @blur="doneEdit(task)" @keyup.enter="doneEdit(task)"
+                  @keyup.esc="cancelEdit(task)" />
+              </td>
+              <td>
+                <button @click="editTask(task)" class="btn btn-info">Modificar</button>
+                <button @click="deleteTask(task)" class="btn btn-danger">Eliminar</button>
+              </td>
+            </tr>
+            <!-- End Cycle For Tasks -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- End Content App -->
+  </div>
+  <!-- End Vue App -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="js/app.js"></script>
 </body>
